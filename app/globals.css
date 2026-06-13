@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  @apply bg-mist text-ink font-sans antialiased;
+}
+
+/* Instrument readout: every health number in the app uses this */
+.readout {
+  @apply font-mono tabular-nums tracking-tight;
+}
+
+.label-tick {
+  @apply text-[11px] font-semibold uppercase tracking-[0.14em] text-faint;
+}
+
+/* Shared page wrapper used by hub and section pages */
+.page-container {
+  @apply max-w-2xl space-y-6;
+}
+
+input[type="range"] {
+  @apply h-1.5 w-full cursor-pointer appearance-none rounded-full bg-line;
+}
+input[type="range"]::-webkit-slider-thumb {
+  @apply h-5 w-5 appearance-none rounded-full bg-pine shadow;
+}
+input[type="range"]::-moz-range-thumb {
+  @apply h-5 w-5 rounded-full border-0 bg-pine shadow;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
