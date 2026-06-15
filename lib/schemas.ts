@@ -51,3 +51,16 @@ export type MealAnalysisOut = z.infer<typeof MealAnalysisSchema>;
 export type HumeAnalysisOut = z.infer<typeof HumeAnalysisSchema>;
 export type LabAnalysisOut = z.infer<typeof LabAnalysisSchema>;
 export type HealthInsightOut = z.infer<typeof HealthInsightSchema>;
+
+export const RecipeExtractionSchema = z.object({
+  parsedName: z.string(),
+  parsedIngredients: z.array(z.string()),
+  parsedInstructions: z.array(z.string()),
+  parsedServings: z.number().optional(),
+  parsedPrepTimeMinutes: z.number().optional(),
+  parsedCookTimeMinutes: z.number().optional(),
+  parsedMealSlot: z.string().optional(),
+  parsedDietStyle: z.string().optional(),
+  parsedTags: z.array(z.string())
+});
+export type RecipeExtractionOut = z.infer<typeof RecipeExtractionSchema>;

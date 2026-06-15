@@ -3,7 +3,7 @@
 import Link from "next/link";
 import {
   Archive, BookOpen, CalendarDays, CalendarDays as CalPlan, ChefHat,
-  ClipboardList, GlassWater, Leaf, Package, Settings,
+  ClipboardList, FileInput, GlassWater, Leaf, Package, Settings,
   ShoppingCart, Sparkles, Target, Utensils, User
 } from "lucide-react";
 import { Card, PageHeader, SectionTitle } from "@/components/ui";
@@ -20,7 +20,8 @@ const HEALTH_SECTIONS = [
 
 const FOOD_SECTIONS = [
   { href: "/smoothies",     icon: GlassWater,   label: "Smoothies",      desc: "Morning smoothie recipes, taste profile, history, and grocery list." },
-  { href: "/recipes",       icon: BookOpen,     label: "Recipe Library", desc: "Browse, add, and manage your full recipe collection." },
+  { href: "/recipes",       icon: BookOpen,     label: "Recipe Library",  desc: "Browse, add, and manage your full recipe collection." },
+  { href: "/recipe-importer", icon: FileInput,    label: "Recipe Importer", desc: "Paste recipe text and turn it into structured recipe cards." },
   { href: "/weekly-plan",   icon: CalendarDays, label: "Weekly Plan",    desc: "Plan meals for the week and generate a grocery list." },
   { href: "/grocery-list",  icon: ShoppingCart, label: "Grocery List",   desc: "Your active grocery list, organized by category or store." },
   { href: "/prep-schedule", icon: ClipboardList,label: "Prep Schedule",  desc: "Weekly prep checklist: chopping, cooking, portioning, and smoothie bags." },

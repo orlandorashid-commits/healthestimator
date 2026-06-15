@@ -11,8 +11,8 @@ import type {
   BPEntry, DB, ExpirationEstimateRule, FoodCategory, Goals, GroceryItem, HealthInsight,
   HumeEntry, InventoryCategory, InventoryItem, InventoryLocation, LabReport,
   MealEntry, MealSlot, PlannedMeal, PrepTask, Profile, Recipe, RecipeCategory, RecipeIngredient,
-  Settings, SmoothieGroceryItem, SmoothieHistoryEntry, SmoothiePreference, SmoothieRecipe,
-  WeekMealPattern, WeeklyPlan, WeightEntry
+  RecipeImportDraft, RecipeSource, Settings, SmoothieGroceryItem, SmoothieHistoryEntry,
+  SmoothiePreference, SmoothieRecipe, WeekMealPattern, WeeklyPlan, WeightEntry
 } from "./types";
 
 const KEY = "healthestimator:v1";
@@ -48,7 +48,9 @@ const EMPTY_DB: DB = {
   inventoryItems: [],
   inventoryLocations: [],
   inventoryCategories: [],
-  expirationRules: []
+  expirationRules: [],
+  recipeSources: [],
+  importDrafts: []
 };
 
 let cache: DB | null = null;
@@ -583,6 +585,16 @@ function seed(db: DB): DB {
     mkItem("Toilet paper", "Household", "Bathroom", 14, { quantity: 6, unit: "rolls" })
   ];
 
+
+  // Recipe source seed data
+  const seedRecipeSources: RecipeSource[] = [
+    { id: "src-1", name: "Mark Hyman", author: "Mark Hyman", sourceType: "Book" as import("./types").RecipeSourceType, dietStyle: "High Protein", tags: ["functional medicine", "high protein"], notes: "Recipes from books and online resources.", createdAt: daysAgo(30), updatedAt: daysAgo(30) },
+    { id: "src-2", name: "Personal recipes", author: "Me", sourceType: "Personal notes" as import("./types").RecipeSourceType, tags: ["personal", "family"], notes: "My own tested recipes.", createdAt: daysAgo(30), updatedAt: daysAgo(30) },
+    { id: "src-3", name: "Mediterranean kitchen", author: "Various", sourceType: "Book" as import("./types").RecipeSourceType, dietStyle: "Mediterranean", tags: ["mediterranean", "olive oil"], notes: "Mediterranean cooking resources.", createdAt: daysAgo(30), updatedAt: daysAgo(30) },
+    { id: "src-4", name: "Smoothie library", author: "Me", sourceType: "Smoothie library" as import("./types").RecipeSourceType, tags: ["smoothie", "morning"], notes: "Morning smoothie collection.", createdAt: daysAgo(30), updatedAt: daysAgo(30) },
+    { id: "src-5", name: "Friend gathering favorites", author: "Friends", sourceType: "Personal notes" as import("./types").RecipeSourceType, tags: ["entertaining", "crowd"], notes: "Crowd-pleasing recipes for gatherings.", createdAt: daysAgo(30), updatedAt: daysAgo(30) }
+  ];
+
   return {
     ...db,
     seeded: true,
@@ -615,7 +627,9 @@ function seed(db: DB): DB {
     inventoryItems: seedInventoryItems,
     inventoryLocations: seedInventoryLocations,
     inventoryCategories: seedInventoryCategories,
-    expirationRules: seedExpirationRules
+    expirationRules: seedExpirationRules,
+    recipeSources: seedRecipeSources,
+    importDrafts: []
   };
 }
 
@@ -802,3 +816,23 @@ export const updateInventoryCategory = (id: string, patch: Partial<InventoryCate
   mutate((db) => ({ ...db, inventoryCategories: db.inventoryCategories.map((c) => (c.id === id ? { ...c, ...patch } : c)) }));
 export const removeInventoryCategory = (id: string) =>
   mutate((db) => ({ ...db, inventoryCategories: db.inventoryCategories.filter((c) => c.id !== id) }));
+
+// Recipe Source mutators
+export const addRecipeSource = (s: RecipeSource) =>
+  mutate((db) => ({ ...db, recipeSources: [s, ...db.recipeSources] }));
+export const updateRecipeSource = (id: string, patch: Partial<RecipeSource>) =>
+  mutate((db) => ({ ...db, recipeSources: db.recipeSources.map((s) => (s.id === id ? { ...s, ...patch } : s)) }));
+export const removeRecipeSource = (id: string) =>
+  mutate((db) => ({ ...db, recipeSources: db.recipeSources.filter((s) => s.id !== id) }));
+
+// Import Draft mutators
+export const addImportDraft = (d: RecipeImportDraft) =>
+  mutate((db) => ({ ...db, importDrafts: [d, ...db.importDrafts] }));
+export const addImportDrafts = (drafts: RecipeImportDraft[]) =>
+  mutate((db) => ({ ...db, importDrafts: [...drafts, ...db.importDrafts] }));
+export const updateImportDraft = (id: string, patch: Partial<RecipeImportDraft>) =>
+  mutate((db) => ({ ...db, importDrafts: db.importDrafts.map((d) => (d.id === id ? { ...d, ...patch } : d)) }));
+export const removeImportDraft = (id: string) =>
+  mutate((db) => ({ ...db, importDrafts: db.importDrafts.filter((d) => d.id !== id) }));
+export const clearSavedDrafts = () =>
+  mutate((db) => ({ ...db, importDrafts: db.importDrafts.filter((d) => !d.saved) }));

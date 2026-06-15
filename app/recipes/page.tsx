@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Check, ChevronDown, ChevronUp, Copy, Pencil, Plus, Trash2, X } from "lucide-react";
+import Link from "next/link";
+import { Check, ChevronDown, ChevronUp, Copy, FileInput, Pencil, Plus, Trash2, X } from "lucide-react";
 import {
   Badge, Button, Card, Chip, cx, EmptyState, Field,
   Input, PageHeader, SectionTitle, Select, Textarea
@@ -370,10 +371,19 @@ export default function RecipesPage() {
 
   const recipes = db.recipes ?? [];
 
+  const recipeSources = db.recipeSources ?? [];
+
   const filtered = recipes.filter((r) => {
     const q = search.toLowerCase();
     if (q && !r.name.toLowerCase().includes(q) && !r.tags.join(" ").includes(q)) return false;
-    if (filterSource !== "all" && r.sourceOrAuthor !== filterSource) return false;
+    if (filterSource !== "all") {
+      // Match by RecipeSource ID or by sourceOrAuthor string
+      const srcObj = recipeSources.find((s) => s.id === filterSource);
+      const match = srcObj
+        ? (r.sourceId === filterSource || r.sourceOrAuthor === srcObj.name || r.sourceOrAuthor === srcObj.author)
+        : r.sourceOrAuthor === filterSource;
+      if (!match) return false;
+    }
     if (filterSlot !== "all" && r.mealSlot !== filterSlot) return false;
     if (filterCat !== "all" && r.category !== filterCat) return false;
     if (filterDiet !== "all" && r.dietStyle !== filterDiet) return false;
@@ -396,9 +406,16 @@ export default function RecipesPage() {
           onCancel={() => setShowAdd(false)}
         />
       ) : (
-        <Button variant="secondary" className="w-full" onClick={() => setShowAdd(true)}>
-          <Plus size={15} /> Add recipe
-        </Button>
+        <div className="grid grid-cols-2 gap-2">
+          <Button variant="secondary" className="w-full" onClick={() => setShowAdd(true)}>
+            <Plus size={15} /> Add recipe
+          </Button>
+          <Link href="/recipe-importer">
+            <Button variant="secondary" className="w-full">
+              <FileInput size={15} /> Import recipes
+            </Button>
+          </Link>
+        </div>
       )}
 
       {/* Filters */}
@@ -418,7 +435,8 @@ export default function RecipesPage() {
           </Select>
           <Select value={filterSource} onChange={(e) => setFilterSource(e.target.value)}>
             <option value="all">All sources</option>
-            {sources.map((s) => <option key={s} value={s}>{s}</option>)}
+            {recipeSources.map((s) => <option key={s.id} value={s.id}>{s.name}{s.author && s.author !== s.name ? " - " + s.author : ""}</option>)}
+            {sources.filter((s) => !recipeSources.some((rs) => rs.name === s || rs.author === s)).map((s) => <option key={s} value={s}>{s}</option>)}
           </Select>
           <Select value={filterDiet} onChange={(e) => setFilterDiet(e.target.value)}>
             <option value="all">All diet styles</option>

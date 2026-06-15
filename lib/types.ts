@@ -181,6 +181,8 @@ export interface DB {
   inventoryLocations: InventoryLocation[];
   inventoryCategories: InventoryCategory[];
   expirationRules: ExpirationEstimateRule[];
+  recipeSources: RecipeSource[];
+  importDrafts: RecipeImportDraft[];
 }
 
 // Smoothie module types
@@ -212,6 +214,7 @@ export interface SmoothieRecipe {
   id: string;
   name: string;
   sourceOrAuthor?: string;
+  sourceId?: string;
   description?: string;
   ingredients: SmoothieIngredientItem[];
   steps: string[];
@@ -289,6 +292,7 @@ export interface Recipe {
   id: string;
   name: string;
   sourceOrAuthor?: string;
+  sourceId?: string;
   dietStyle?: string;
   mealSlot: MealSlot;
   category: RecipeCategory;
@@ -407,4 +411,59 @@ export interface ExpirationEstimateRule {
   estimatedDaysFresh: number;
   storageLocation?: string;
   notes?: string;
+}
+
+// Recipe Importer types
+
+export type RecipeSourceType =
+  | "Book" | "PDF" | "Website" | "Personal notes"
+  | "Smoothie library" | "AI generated" | "Other";
+
+export interface RecipeSource {
+  id: string;
+  name: string;
+  author?: string;
+  sourceType: RecipeSourceType;
+  dietStyle?: string;
+  notes?: string;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type DraftConfidence = "low" | "medium" | "high";
+
+export interface RecipeImportDraft {
+  id: string;
+  sourceId?: string;
+  rawText: string;
+  parsedName: string;
+  parsedIngredients: string[];
+  parsedInstructions: string[];
+  parsedServings?: number;
+  parsedPrepTimeMinutes?: number;
+  parsedCookTimeMinutes?: number;
+  parsedMealSlot?: string;
+  parsedCategory?: string;
+  parsedDietStyle?: string;
+  parsedTags: string[];
+  confidence: DraftConfidence;
+  needsReview: boolean;
+  saved: boolean;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type ImportBatchStatus = "pending" | "reviewing" | "completed";
+
+export interface RecipeImportBatch {
+  id: string;
+  sourceId?: string;
+  title: string;
+  rawText: string;
+  draftIds: string[];
+  status: ImportBatchStatus;
+  createdAt: string;
+  updatedAt: string;
 }

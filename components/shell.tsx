@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Activity, Archive, BookOpen, CalendarDays, Camera, ClipboardList, FlaskConical,
+  Activity, Archive, BookOpen, CalendarDays, Camera, ClipboardList, FileInput, FlaskConical,
   Gauge, GlassWater, Home, Leaf, ListChecks, Menu, ScanLine, Settings,
   ShoppingCart, Sparkles, Target, User, Utensils, Weight
 } from "lucide-react";
@@ -28,6 +28,7 @@ const HEALTH_NAV = [
 const FOOD_NAV = [
   { href: "/smoothies",     label: "Smoothies",     icon: GlassWater },
   { href: "/recipes",       label: "Recipe Library", icon: BookOpen },
+  { href: "/recipe-importer", label: "Recipe Importer", icon: FileInput },
   { href: "/weekly-plan",   label: "Weekly Plan",   icon: CalendarDays },
   { href: "/grocery-list",  label: "Grocery List",  icon: ShoppingCart },
   { href: "/prep-schedule", label: "Prep Schedule", icon: ClipboardList },

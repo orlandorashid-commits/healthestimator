@@ -50,12 +50,13 @@ function slotsForPattern(pattern: WeekMealPattern): MealSlot[] {
 }
 
 function SlotRow({
-  date, slot, meal, plan, recipes, smoothies, onClear
+  date, slot, meal, plan, recipes, smoothies, onClear, sourceFilter
 }: {
   date: string; slot: MealSlot; meal?: PlannedMeal; plan: WeeklyPlan;
   recipes: ReturnType<typeof useDB>["db"]["recipes"];
   smoothies: ReturnType<typeof useDB>["db"]["smoothies"];
   onClear: () => void;
+  sourceFilter?: string;
 }) {
   const [picking, setPicking] = useState(false);
   const [customName, setCustomName] = useState("");
@@ -67,8 +68,14 @@ function SlotRow({
   const slotRecipes = slot === "smoothie"
     ? smoothies.map((s) => ({ id: s.id, name: s.name, kind: "smoothie" as const }))
     : recipes
-        .filter((r) => r.mealSlot === slot || r.mealSlot === "flexible")
-        .map((r) => ({ id: r.id, name: r.name, kind: "recipe" as const }));
+        .filter((r) => {
+          if (r.mealSlot !== slot && r.mealSlot !== "flexible") return false;
+          if (sourceFilter && sourceFilter !== "all") {
+            return r.sourceOrAuthor === sourceFilter || r.sourceId === sourceFilter;
+          }
+          return true;
+        })
+        .map((r) => ({ id: r.id, name: r.name, sourceOrAuthor: r.sourceOrAuthor, kind: "recipe" as const }));
 
   function handleSelect(id: string, kind: "recipe" | "smoothie") {
     upsertPlannedMeal(plan.id, {
@@ -172,10 +179,11 @@ function SlotRow({
   );
 }
 
-function DayCard({ date, dayName, plan, recipes, smoothies }: {
+function DayCard({ date, dayName, plan, recipes, smoothies, sourceFilter }: {
   date: string; dayName: string; plan: WeeklyPlan;
   recipes: ReturnType<typeof useDB>["db"]["recipes"];
   smoothies: ReturnType<typeof useDB>["db"]["smoothies"];
+  sourceFilter?: string;
 }) {
   const slots = slotsForPattern(plan.mealPattern);
   const dayMeals = plan.days.filter((d) => d.date === date);
@@ -201,6 +209,7 @@ function DayCard({ date, dayName, plan, recipes, smoothies }: {
             key={slot} date={date} slot={slot} meal={meal}
             plan={plan} recipes={recipes} smoothies={smoothies}
             onClear={() => removePlannedMeal(plan.id, date, slot)}
+            sourceFilter={sourceFilter}
           />
         );
       })}
@@ -257,10 +266,13 @@ export default function WeeklyPlanPage() {
   const [planIdx, setPlanIdx] = useState(0);
   const [showNew, setShowNew] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const [sourceFilter, setSourceFilter] = useState("all");
 
   const plans = db.weeklyPlans ?? [];
   const recipes = db.recipes ?? [];
   const smoothies = db.smoothies ?? [];
+  const recipeSources = db.recipeSources ?? [];
+  const sourceOptions = Array.from(new Set(recipes.map((r) => r.sourceOrAuthor).filter(Boolean))) as string[];
 
   const plan = plans[planIdx];
   const weekDates = plan ? getWeekDates(plan.startDate) : [];
@@ -416,12 +428,31 @@ export default function WeeklyPlanPage() {
             </Button>
           </div>
 
+          {/* Source filter */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-xs text-muted font-semibold">Filter recipes by source:</span>
+            <select
+              value={sourceFilter}
+              onChange={(e) => setSourceFilter(e.target.value)}
+              className="rounded-xl border border-line bg-surface px-3 py-1.5 text-xs text-ink focus:border-pine focus:outline-none"
+            >
+              <option value="all">All sources</option>
+              {recipeSources.map((s) => (
+                <option key={s.id} value={s.id}>{s.name}{s.author && s.author !== s.name ? " - "+s.author : ""}</option>
+              ))}
+              {sourceOptions.filter((s) => !recipeSources.some((rs) => rs.name === s || rs.author === s)).map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
+          </div>
+
           {/* Day cards */}
           <section className="space-y-3">
             {weekDates.map((date, i) => (
               <DayCard
                 key={date} date={date} dayName={DAY_NAMES[i]}
                 plan={plan} recipes={recipes} smoothies={smoothies}
+                sourceFilter={sourceFilter}
               />
             ))}
           </section>
