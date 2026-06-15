@@ -731,7 +731,7 @@ body {
 .rhythm-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.4rem;text-align:center;}
 .rhythm-mode-label{font-size:.68rem;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem;}
 .rhythm-meter{font-family:'DM Mono',monospace;font-size:.9rem;font-weight:800;color:var(--gold);margin-bottom:1rem;}
-.rhythm-visual{min-height:90px;border:1px solid var(--border);border-radius:12px;background:var(--bg2);padding:1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;flex-wrap:nowrap;margin-bottom:.9rem;}
+.rhythm-visual{min-height:90px;border:1px solid var(--border);border-radius:12px;background:var(--bg2);padding:1rem;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:.55rem;flex-wrap:nowrap;margin-bottom:.9rem;}
 .rhythm-row{display:flex;align-items:center;justify-content:center;gap:.45rem;flex-wrap:nowrap;width:100%;}
 .rhythm-bar{display:flex;align-items:center;justify-content:center;gap:.45rem;flex:0 0 auto;flex-wrap:nowrap;}
 .rhythm-empty{color:var(--ink3);font-size:.85rem;}
@@ -760,6 +760,22 @@ body {
 .r-countoff-number.active{opacity:1;}
 .rhythm-bar-sep{width:2px;min-height:58px;background:var(--border);border-radius:2px;margin:0 6px;flex-shrink:0;align-self:stretch;}
 .rhythm-page-indicator{font-family:'DM Mono',monospace;font-size:.72rem;font-weight:600;color:var(--ink3);text-align:center;margin-bottom:.4rem;letter-spacing:.04em;}
+/* Density modes: normal (1-4 bars), compact (8 bars), chart (16 bars) */
+.rhythm-visual.rhythm-density-compact{padding:.75rem;gap:.38rem;}
+.rhythm-visual.rhythm-density-compact .rhythm-row{gap:.35rem;}
+.rhythm-visual.rhythm-density-compact .rhythm-bar{gap:.32rem;}
+.rhythm-visual.rhythm-density-compact .rhythm-beat{width:34px;height:42px;font-size:.62rem;border-radius:8px;}
+.rhythm-visual.rhythm-density-compact .rhythm-bar-sep{min-height:42px;margin:0 4px;}
+.rhythm-visual.rhythm-density-chart{padding:.55rem;gap:.24rem;}
+.rhythm-visual.rhythm-density-chart .rhythm-row{gap:.24rem;}
+.rhythm-visual.rhythm-density-chart .rhythm-bar{gap:.22rem;}
+.rhythm-visual.rhythm-density-chart .rhythm-beat{width:28px;height:28px;font-size:.52rem;border-radius:6px;}
+.rhythm-visual.rhythm-density-chart .rhythm-bar-sep{min-height:28px;margin:0 3px;}
+@media(max-width:520px){
+  .rhythm-visual.rhythm-density-compact .rhythm-beat{width:30px;height:36px;font-size:.58rem;}
+  .rhythm-visual.rhythm-density-chart .rhythm-beat{width:24px;height:24px;font-size:.48rem;}
+  .rhythm-visual.rhythm-density-chart{padding:.45rem;gap:.2rem;}
+}
 .r-tap-pad-wrap{display:flex;justify-content:center;margin:1rem 0 .85rem;}
 .r-tap-pad{width:148px;height:148px;border-radius:50%;border:2px solid rgba(201,168,76,.55);background:radial-gradient(circle at 35% 28%,rgba(232,213,160,.25),transparent 34%),linear-gradient(135deg,rgba(201,168,76,.24),rgba(123,94,167,.18));color:var(--ink);box-shadow:0 14px 34px rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,255,255,.05);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;cursor:pointer;transition:transform .08s,border-color .12s,box-shadow .12s,opacity .12s;touch-action:manipulation;user-select:none;-webkit-user-select:none;font-family:'DM Sans',sans-serif;}
 .r-tap-pad:hover{border-color:var(--gold);box-shadow:0 18px 40px rgba(0,0,0,.34),0 0 18px rgba(201,168,76,.18);}
@@ -1234,6 +1250,56 @@ body {
 .p-chord-builder-chip{padding:.28rem .55rem;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--ink3);font-family:'DM Mono',monospace;font-size:.74rem;font-weight:700;}
 .p-chord-builder-chip.done{background:rgba(58,158,111,.18);border-color:rgba(58,158,111,.45);color:#3A9E6F;}
 .p-chord-builder-chip.wrong{background:rgba(192,97,74,.18);border-color:rgba(192,97,74,.45);color:#C0614A;}
+
+/* ── Mobile Navigation ───────────────────────────────── */
+.mobile-menu-btn{display:none;}
+.mobile-page-title{display:none;}
+.mobile-menu-overlay,.mobile-menu-drawer{display:none;}
+@media(max-width:700px){
+  .top-nav{height:54px;padding:0 .85rem;justify-content:space-between;}
+  .nav-tabs{display:none;}
+  .nav-right{display:none;}
+  .nav-brand{margin-right:0;}
+  .mobile-page-title{display:block;font-size:.78rem;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.08em;margin-left:.5rem;margin-right:auto;}
+  .mobile-menu-btn{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--ink);font-size:1.25rem;cursor:pointer;}
+  .mobile-menu-overlay{display:block;position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .18s;z-index:900;}
+  .mobile-menu-overlay.open{opacity:1;pointer-events:auto;}
+  .mobile-menu-drawer{display:flex;flex-direction:column;position:fixed;top:0;right:0;width:min(84vw,340px);height:100vh;background:var(--surface);border-left:1px solid var(--border);box-shadow:-18px 0 48px rgba(0,0,0,.42);transform:translateX(100%);transition:transform .22s ease;z-index:901;padding:1rem;overflow-y:auto;}
+  .mobile-menu-drawer.open{transform:translateX(0);}
+  .mobile-menu-header{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding-bottom:.85rem;margin-bottom:.75rem;border-bottom:1px solid var(--border);}
+  .mobile-menu-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:800;color:var(--ink);}
+  .mobile-menu-close{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--bg2);color:var(--ink);font-size:1.35rem;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;}
+  .mobile-menu-item{width:100%;text-align:left;padding:.85rem .9rem;border-radius:12px;border:1px solid transparent;background:transparent;color:var(--ink2);font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;margin-bottom:.25rem;}
+  .mobile-menu-item:hover,.mobile-menu-item.active{background:var(--bg2);border-color:var(--border);color:var(--gold);}
+}
+
+/* ── Mobile Rhythm Layout ─────────────────────────────── */
+.r-mobile-settings-toggle{display:none;}
+.r-mobile-settings-panel{display:block;}
+@media(max-width:700px){
+  .rhythm-wrap{padding:.75rem .65rem 7.5rem;}
+  .rhythm-header{padding:.85rem;margin-bottom:.6rem;}
+  .rhythm-header h2{font-size:1.15rem;}
+  .rhythm-header p{font-size:.76rem;}
+  .rhythm-card{padding:.85rem;}
+  .r-mobile-settings-toggle{display:flex;align-items:center;gap:.65rem;margin-bottom:.6rem;flex-wrap:wrap;}
+  .r-mobile-settings-btn{padding:.45rem .8rem;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--ink2);font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+  .r-mobile-settings-summary{font-size:.72rem;color:var(--ink3);font-family:'DM Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .r-mobile-settings-panel{max-height:0;overflow:hidden;opacity:0;pointer-events:none;transition:max-height .28s ease,opacity .2s;}
+  .r-mobile-settings-panel.open{max-height:1000px;opacity:1;pointer-events:auto;}
+  .rhythm-visual{margin-bottom:.55rem;}
+  .rhythm-visual.rhythm-density-chart .rhythm-beat{width:22px;height:22px;font-size:.44rem;}
+  .rhythm-visual.rhythm-density-chart .rhythm-row{gap:.18rem;}
+  .rhythm-visual.rhythm-density-chart .rhythm-bar{gap:.18rem;}
+  .rhythm-visual.rhythm-density-chart .rhythm-bar-sep{min-height:22px;margin:0 2px;}
+  #page-rhythm .r-tap-pad-wrap{position:sticky;bottom:.6rem;z-index:80;margin:.65rem 0 .35rem;padding:.45rem 0;background:linear-gradient(to top,var(--bg),rgba(0,0,0,0));border-radius:18px;}
+  #page-rhythm .r-tap-pad{width:132px;height:132px;}
+  #page-rhythm .r-tap-pad-main{font-size:1.45rem;}
+  #page-rhythm .r-tap-pad-sub{font-size:.6rem;}
+  #page-rhythm .p-btn-row{gap:.4rem;}
+  #page-rhythm .p-btn{flex:1 1 calc(50% - .4rem);min-height:44px;padding:.55rem .65rem;font-size:.8rem;}
+  #r-auditionBtn,#r-practiceBtn{flex-basis:calc(50% - .4rem);}
+}
 </style>
 </head>
 <body>
@@ -1357,6 +1423,8 @@ body {
       <span class="nav-logo-word">Music<span>Mein</span></span>
     </button>
 
+    <span class="mobile-page-title" id="mobilePageTitle">Practice</span>
+
     <div class="nav-tabs" id="navTabs">
       <button class="nav-tab active" data-page="practice" onclick="switchPage('practice')">
         <span class="tab-dot" style="background:var(--accent-practice)"></span>
@@ -1408,6 +1476,7 @@ body {
         <span class="nav-profile-name" id="navProfileName"></span>
       </div>
     </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Open menu">&#9776;</button>
   </nav>
 
   <!-- PAGES -->
@@ -1853,6 +1922,12 @@ body {
           <p>Listen to a rhythm, then tap it back in time.</p>
         </div>
 
+        <!-- Mobile settings toggle (hidden on desktop) -->
+        <div class="r-mobile-settings-toggle" id="r-mobileSettingsToggle">
+          <button class="r-mobile-settings-btn" id="r-mobileSettingsBtn" onclick="r_toggleMobileSettings()">Rhythm Settings</button>
+          <span class="r-mobile-settings-summary" id="r-mobileSettingsSummary">4/4 &middot; Medium &middot; 2 Bars &middot; 84 BPM</span>
+        </div>
+        <div id="r-mobileSettingsPanel" class="r-mobile-settings-panel">
         <div class="rhythm-controls">
           <div class="p-control-group">
             <label>Meter</label>
@@ -1876,6 +1951,7 @@ body {
               <option value="2" selected>2 Bars</option>
               <option value="4">4 Bars</option>
               <option value="8">8 Bars</option>
+              <option value="16">16 Bars</option>
             </select>
           </div>
           <div class="p-control-group">
@@ -1949,6 +2025,7 @@ body {
             <span class="p-bpm-val p-vol-val" id="r-liveVal">75</span>
           </div>
         </div>
+        </div><!-- /r-mobileSettingsPanel -->
 
         <div class="rhythm-main-grid">
           <div class="rhythm-card">
@@ -2504,7 +2581,38 @@ function switchPage(page) {
   if (pageEl) pageEl.classList.add('active');
   const tabEl = document.querySelector('.nav-tab[data-page="' + page + '"]');
   if (tabEl) tabEl.classList.add('active');
+  // Sync mobile drawer active item and page title
+  document.querySelectorAll('.mobile-menu-item').forEach(btn=>{
+    btn.classList.toggle('active',btn.dataset.page===page);
+  });
+  updateMobilePageTitle(page);
 }
+
+/* ── Mobile navigation ───────────────────────────────── */
+function toggleMobileMenu(){
+  const ov=document.getElementById('mobileMenuOverlay');
+  const dr=document.getElementById('mobileMenuDrawer');
+  if(!ov||!dr)return;
+  if(dr.classList.contains('open'))closeMobileMenu();
+  else{ov.classList.add('open');dr.classList.add('open');}
+}
+function closeMobileMenu(){
+  const ov=document.getElementById('mobileMenuOverlay');
+  const dr=document.getElementById('mobileMenuDrawer');
+  if(ov)ov.classList.remove('open');
+  if(dr)dr.classList.remove('open');
+}
+function mobileSwitchPage(page){
+  switchPage(page);
+  closeMobileMenu();
+}
+function updateMobilePageTitle(page){
+  const el=document.getElementById('mobilePageTitle');
+  if(!el)return;
+  const names={practice:'Practice',ear:'Ear Training',rhythm:'Rhythm',sight:'Sight Reading',intervals:'Intervals',improv:'Improv',theory:'Theory',progress:'Progress'};
+  el.textContent=names[page]||'MusicMein';
+}
+document.addEventListener('keydown',function(ev){if(ev.key==='Escape')closeMobileMenu();});
 
 /* ============================================================
    DECORATIVE LOGO KEYS
@@ -6190,6 +6298,8 @@ let r_rhythmGuide=true;  // controls rhythm pattern hit audio
 let r_browserSynthOn=true; // controls user tap feedback sound
 let r_meter='4/4'; // current time signature
 let r_beatsPerBar=4; // derived from r_meter
+let r_timingOffsetMs=0; // future latency calibration offset; 0 = disabled
+let r_mobileSettingsOpen=false; // mobile settings panel open/closed state
 let r_countInBars=2;
 let r_focus='random';
 let r_guideTimers=[], r_visualTimer=null, r_countDisplayTimer=null;
@@ -6206,6 +6316,10 @@ const R_BAR_VOCAB={
   half:        [[0,2],[0],[2]],
   quarter:     [[0,1,2,3],[0,2,3],[0,1,3],[0,1,2]],
   quarter_rest:[[0,2],[0,1,3],[1,2,3],[0,3],[0,2,3]],
+  // accent_varied: integer-only asymmetric patterns for Hard/Expert depth without subdivision
+  accent_varied:[[1,3],[0,1],[2,3],[1,2],[0,1,2],[1,2,3]],
+  // Fractional vocabularies below: retained for explicit Focus selections;
+  // r_enforceVisibleBeatGrid strips any fractional beats before playback.
   eighth:      [[0,0.5,1,1.5,2,2.5,3,3.5],[0,1,1.5,2,3],[0,0.5,2,2.5,3],[0,1,2,2.5,3.5]],
   offbeat:     [[0.5,1.5,2.5,3.5],[0,1.5,2.5],[0.5,2,3.5],[0,0.5,2,3.5]],
   dotted:      [[0,1.5,2,3],[0,1.5,3],[0,2,3.5],[0,0.75,2,3]],
@@ -6227,12 +6341,13 @@ const R_FOCUS_UNITS={
   mixed:        ['quarter','eighth','offbeat','syncopation'],
 };
 
-// Unit types available when focus=random, gated by difficulty
+// Fractional units (eighth/offbeat/dotted/triplet/syncopation) excluded from Random
+// until a subdivision visual is added. accent_varied gives Hard/Expert variety with integers.
 const R_RANDOM_UNITS={
   easy:   ['whole','half','quarter','quarter_rest'],
-  medium: ['half','quarter','quarter_rest','eighth','offbeat'],
-  hard:   ['quarter','eighth','offbeat','syncopation','dotted'],
-  expert: ['eighth','offbeat','dotted','triplet','syncopation'],
+  medium: ['half','quarter','quarter_rest'],
+  hard:   ['quarter','quarter_rest','accent_varied'],
+  expert: ['quarter_rest','accent_varied','quarter'],
 };
 
 function r_getBeatMs(){return 60000/r_bpm;}
@@ -6243,6 +6358,86 @@ function r_pickBarPattern(units){
   units.forEach(u=>{if(R_BAR_VOCAB[u])R_BAR_VOCAB[u].forEach(b=>pool.push({beats:b,unit:u}));});
   if(!pool.length)return{beats:[0,1,2,3],unit:'quarter'};
   return pool[Math.floor(Math.random()*pool.length)];
+}
+
+// Strip any fractional beat positions from pattern.beats so only visible
+// integer grid slots (0,1,2,3 per bar) remain. Called after every phrase build.
+function r_enforceVisibleBeatGrid(pattern){
+  if(!pattern||!Array.isArray(pattern.beats))return pattern;
+  const seen=new Set();
+  const clean=pattern.beats.filter(beat=>{
+    if(Math.abs(beat-Math.round(beat))>0.001)return false; // fractional: skip
+    const r=Math.round(beat);
+    if(r<0||r>=pattern.totalBeats)return false; // out of range
+    if(seen.has(r))return false; // duplicate
+    seen.add(r);return true;
+  }).map(b=>Math.round(b)).sort((a,b)=>a-b);
+  pattern.beats=clean;
+  return pattern;
+}
+
+// Returns true if every beat position is an exact integer (matches a visible box).
+function r_validatePatternMatchesVisual(pattern){
+  if(!pattern||!Array.isArray(pattern.beats))return false;
+  return pattern.beats.every(beat=>Math.abs(beat-Math.round(beat))<0.001);
+}
+
+// Serialize a bar pattern to a compact string for comparison
+function r_serializeBar(bp){
+  return bp.beats.map(b=>Math.round(b*1000)/1000).join(',');
+}
+
+// Serialize a two-bar row for row-level duplicate detection
+function r_serializeRow(bpA,bpB){
+  return r_serializeBar(bpA)+'|'+r_serializeBar(bpB);
+}
+
+// Pick a different bar pattern from the vocabulary; falls back to original if no alternatives exist
+function r_mutateBarWithinFocus(bp,units){
+  const pool=[];
+  const origKey=JSON.stringify(bp.beats);
+  units.forEach(u=>{
+    if(R_BAR_VOCAB[u])R_BAR_VOCAB[u].forEach(b=>{
+      if(JSON.stringify(b)!==origKey)pool.push({beats:b,unit:u});
+    });
+  });
+  if(!pool.length)return bp;
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+// Post-process barSeq to reduce obvious repetition.
+// Medium: max 4 bar copies, max 2 identical rows.
+// Hard: max 3 bar copies, max 1 identical row.
+// Expert: max 2 bar copies, max 1 identical row.
+// Easy is left untouched.
+function r_reducePhraseRepetition(barSeq,diff,units){
+  if(diff==='easy')return barSeq;
+  const result=barSeq.slice();
+  const maxBarCopies=diff==='expert'?2:diff==='hard'?3:4;
+  const maxRowCopies=diff==='expert'?1:diff==='hard'?1:2;
+  // Pass 1: bar-level repetition limit
+  const barCount={};
+  for(let i=0;i<result.length;i++){
+    const key=r_serializeBar(result[i]);
+    barCount[key]=(barCount[key]||0)+1;
+    if(barCount[key]>maxBarCopies){
+      const m=r_mutateBarWithinFocus(result[i],units);
+      const mk=r_serializeBar(m);
+      if(mk!==key){barCount[key]--;barCount[mk]=(barCount[mk]||0)+1;result[i]=m;}
+    }
+  }
+  // Pass 2: row-level repetition limit (medium, hard, expert)
+  const rowCount={};
+  for(let i=0;i+1<result.length;i+=2){
+    const rk=r_serializeRow(result[i],result[i+1]);
+    rowCount[rk]=(rowCount[rk]||0)+1;
+    if(rowCount[rk]>maxRowCopies){
+      const m=r_mutateBarWithinFocus(result[i+1],units);
+      const nrk=r_serializeRow(result[i],m);
+      if(nrk!==rk){rowCount[rk]--;rowCount[nrk]=(rowCount[nrk]||0)+1;result[i+1]=m;}
+    }
+  }
+  return result;
 }
 
 // Build a multi-bar phrase using difficulty (variation) and focus (vocabulary).
@@ -6300,24 +6495,28 @@ function r_buildPhrase(){
     }
   }
 
+  // Reduce obvious repetition in Medium, Hard, and Expert phrases
+  const finalBarSeq=diff!=='easy'?r_reducePhraseRepetition(barSeq,diff,units):barSeq;
+
   // Build flat beats array and structured barPatterns
   const beats=[];
   const barPatterns=[];
-  barSeq.forEach((bp,barIdx)=>{
+  finalBarSeq.forEach((bp,barIdx)=>{
     barPatterns.push({bar:barIdx+1,unit:bp.unit,localBeats:bp.beats.slice()});
     bp.beats.forEach(lb=>beats.push(Math.round((lb+barIdx*4)*1000)/1000));
   });
 
   // Dominant unit for naming/display
   const unitCounts={};
-  barSeq.forEach(bp=>{unitCounts[bp.unit]=(unitCounts[bp.unit]||0)+1;});
+  finalBarSeq.forEach(bp=>{unitCounts[bp.unit]=(unitCounts[bp.unit]||0)+1;});
   const dominantUnit=Object.entries(unitCounts).sort((a,b)=>b[1]-a[1])[0][0];
   const focusLabel=focus==='random'?dominantUnit.replace(/_/g,' '):focus.replace(/_/g,' ');
   const diffLabel=diff.charAt(0).toUpperCase()+diff.slice(1);
+  const barLabel=bars>=8?(bars+'-Bar '):'';
   const formLabel=diff==='easy'?'Pattern':diff==='medium'?'A/B Phrase':diff==='hard'?'Varied Phrase':'Complex Phrase';
 
   return{
-    name:diffLabel+' '+formLabel,
+    name:diffLabel+' '+barLabel+formLabel,
     meter:r_meter,
     bars,
     beatsPerBar:r_beatsPerBar,
@@ -6342,13 +6541,9 @@ function r_computePages(){
 }
 
 function r_updatePageIndicator(){
-  const el=document.getElementById('r-pageIndicator');if(!el)return;
-  if(r_totalPages<=1||!r_currentPattern){el.style.display='none';return;}
-  el.style.display='';
-  const firstBar=r_currentPage*r_barsPerPage+1;
-  const lastBar=Math.min((r_currentPage+1)*r_barsPerPage,r_currentPattern.bars);
-  el.textContent='Page '+(r_currentPage+1)+' of '+r_totalPages+' \u00b7 Bars '+firstBar+' to '+lastBar;
-  console.log('[Rhythm page]',{page:r_currentPage+1,totalPages:r_totalPages,visibleBars:lastBar-firstBar+1});
+  // Paging removed: all bars are visible at once, no indicator needed.
+  const el=document.getElementById('r-pageIndicator');
+  if(el) el.style.display='none';
 }
 
 function r_getPageForBeat(absoluteBeat){
@@ -6365,6 +6560,7 @@ function r_ensurePageForBeat(absoluteBeat){
 
 function r_pickPattern(){
   r_currentPattern=r_buildPhrase();
+  r_enforceVisibleBeatGrid(r_currentPattern); // ensure only visible integer beats
   r_userTaps=[];
   r_computePages();
   r_renderPattern();
@@ -6397,6 +6593,7 @@ function r_onSettingsChange(){
   r_meter=me?me.value:'4/4';
   r_beatsPerBar=r_meter==='3/4'?3:r_meter==='6/8'?6:4;
   r_pickPattern();
+  r_updateMobileSettingsSummary();
 }
 
 function r_nextPattern(){
@@ -6416,30 +6613,24 @@ function r_renderPattern(activeIndex,userIndex,missIndex){
   const el=document.getElementById('r-visual');if(!el)return;
   if(!r_currentPattern){el.innerHTML='<div class="rhythm-empty">Press Audition or Practice to begin.</div>';return;}
 
-  // Auto-switch page when the active beat is on a different page
-  if(activeIndex!==undefined&&activeIndex!==null){
-    r_ensurePageForBeat(activeIndex);
-  }
-
   el.innerHTML='';
   const totalBeats=r_currentPattern.totalBeats||r_currentPattern.bars*4;
   const bars=r_currentPattern.bars||(totalBeats/4);
   const hitSet=new Set(r_currentPattern.beats.map(b=>Math.round(b*1000)/1000));
 
-  // Paging: show only the bars belonging to the current page
-  const firstBarOnPage=r_currentPage*r_barsPerPage;
-  const lastBarOnPage=Math.min(firstBarOnPage+r_barsPerPage-1,bars-1);
-  const barsOnPage=lastBarOnPage-firstBarOnPage+1;
+  // Apply visual density class based on phrase length
+  el.classList.remove('rhythm-density-normal','rhythm-density-compact','rhythm-density-chart');
+  el.classList.add(bars<=4?'rhythm-density-normal':bars<=8?'rhythm-density-compact':'rhythm-density-chart');
 
-  // Never split a bar across rows
-  const barsPerRow=barsOnPage<=2?barsOnPage:2;
-  const numRows=Math.ceil(barsOnPage/barsPerRow);
+  // Show all bars: 1 bar alone on its row, 2 bars per row otherwise; never split a bar
+  const barsPerRow=bars<=1?1:2;
+  const numRows=Math.ceil(bars/barsPerRow);
 
   for(let row=0;row<numRows;row++){
     const rowEl=document.createElement('div');
     rowEl.className='rhythm-row';
-    const firstBarInRow=firstBarOnPage+row*barsPerRow;
-    const lastBarInRow=Math.min(firstBarInRow+barsPerRow-1,lastBarOnPage);
+    const firstBarInRow=row*barsPerRow;
+    const lastBarInRow=Math.min(firstBarInRow+barsPerRow-1,bars-1);
 
     for(let bar=firstBarInRow;bar<=lastBarInRow;bar++){
       if(bar>firstBarInRow){
@@ -6502,7 +6693,7 @@ function r_setStatus(msg){
 function r_setFeedback(msg,type){
   const el=document.getElementById('r-feedback');
   if(!el)return;
-  el.textContent=msg;
+  el.innerHTML=msg; // supports <br> for two-line timing feedback
   el.className='rhythm-feedback '+(type||'neutral');
 }
 
@@ -6625,6 +6816,7 @@ function r_updateBPM(value){
   r_bpm=parseInt(value,10);
   const el=document.getElementById('r-bpmVal');
   if(el) el.textContent=r_bpm;
+  r_updateMobileSettingsSummary();
 }
 
 // Volume wrappers -- delegate to the shared Practice gain functions so both pages
@@ -6650,6 +6842,27 @@ function r_updateLiveVol(val){
   if(typeof p_updateLiveVol==='function') p_updateLiveVol(val);
   const el=document.getElementById('r-liveVal');
   if(el) el.textContent=val;
+}
+
+// Toggle mobile settings panel open/closed.
+// On desktop the panel is always visible; this function only matters on mobile.
+function r_toggleMobileSettings(){
+  r_mobileSettingsOpen=!r_mobileSettingsOpen;
+  const panel=document.getElementById('r-mobileSettingsPanel');
+  const btn=document.getElementById('r-mobileSettingsBtn');
+  if(panel)panel.classList.toggle('open',r_mobileSettingsOpen);
+  if(btn)btn.textContent=r_mobileSettingsOpen?'Hide Settings':'Rhythm Settings';
+}
+
+// Update the compact summary line shown when mobile settings are collapsed.
+function r_updateMobileSettingsSummary(){
+  const el=document.getElementById('r-mobileSettingsSummary');
+  if(!el)return;
+  const diff=r_diff||'medium';
+  const diffLabel=diff.charAt(0).toUpperCase()+diff.slice(1);
+  const bars=r_lengthBars||2;
+  const barsLabel=bars+(bars===1?' Bar':' Bars');
+  el.textContent=(r_meter||'4/4')+' \u00b7 '+diffLabel+' \u00b7 '+barsLabel+' \u00b7 '+(r_bpm||84)+' BPM';
 }
 
 // Play a pitched MIDI note in Rhythm Training.
@@ -6774,6 +6987,7 @@ function r_playPatternOnce(done){
 function r_startAudition(){
   if(r_transportState!=='stopped')return;
   if(!r_currentPattern)r_pickPattern();
+  r_enforceVisibleBeatGrid(r_currentPattern); // playback guard: strip fractional beats
   r_isPlaying=true;r_isListening=false;r_isAuditioning=true;
   r_transportState='auditioning';
   r_updateTransportButtons();
@@ -6803,17 +7017,10 @@ function r_startAudition(){
     for(let q=0;q<totalBeats;q++){
       const delay=Math.max(0,loopStartMs+q*beatMs-now);
       const isDown=q%4===0;
-      const _q=q;
       const t=setTimeout(()=>{
         if(r_transportState!=='auditioning')return;
         if(r_guideClick) r_playClick(isDown);
         r_pulseDot(isDown);
-        // At bar downbeats check for page advance; re-render if page changed
-        if(isDown){
-          const prevPage=r_currentPage;
-          r_ensurePageForBeat(_q);
-          if(r_currentPage!==prevPage)r_renderPattern();
-        }
       },delay);
       r_playTimers.push(t);
     }
@@ -6832,6 +7039,7 @@ function r_startAudition(){
 function r_startPractice(){
   if(r_transportState!=='stopped')return;
   if(!r_currentPattern)r_pickPattern();
+  r_enforceVisibleBeatGrid(r_currentPattern); // playback guard: strip fractional beats
   r_userTaps=[];r_isPlaying=false;r_isListening=false;r_isAuditioning=false;
   r_transportState='counting';
   r_updateTransportButtons();
@@ -6948,18 +7156,72 @@ function r_gradeAttempt(){
   r_isListening=false;r_transportState='stopped';
   r_updateTransportButtons();
   if(r_listenTimer){clearTimeout(r_listenTimer);r_listenTimer=null;}
+
   const target=r_currentPattern.beats;
   const taps=r_userTaps.slice();
+  const beatMs=r_getBeatMs();
+
+  // Tolerance window in beats (wider window for easier; scoring inside is still strict)
   const tol=r_diff==='easy'?0.28:r_diff==='medium'?0.22:r_diff==='hard'?0.18:0.14;
-  let matched=0;const used=new Set();let totalErr=0;
+  // Future latency calibration offset (ms -> beats); currently 0
+  const offsetBeats=r_timingOffsetMs/beatMs;
+
+  // Match each target beat to the closest unmatched tap within tolerance
+  const used=new Set();
+  const matchedErrors=[]; // signed ms error per matched tap (negative=early, positive=late)
   target.forEach(tb=>{
+    const adjTb=tb+offsetBeats;
     let bestIdx=-1,bestErr=Infinity;
-    taps.forEach((tap,idx)=>{if(used.has(idx))return;const e=Math.abs(tap-tb);if(e<bestErr){bestErr=e;bestIdx=idx;}});
-    if(bestIdx>=0&&bestErr<=tol){matched++;used.add(bestIdx);totalErr+=bestErr;}
+    taps.forEach((tap,idx)=>{
+      if(used.has(idx))return;
+      const e=Math.abs(tap-adjTb);
+      if(e<bestErr){bestErr=e;bestIdx=idx;}
+    });
+    if(bestIdx>=0&&bestErr<=tol){
+      matchedErrors.push((taps[bestIdx]-adjTb)*beatMs);
+      used.add(bestIdx);
+    }
   });
-  const penalty=Math.abs(taps.length-target.length);
-  const raw=Math.max(0,Math.round((matched/target.length)*100-penalty*8));
-  console.log('[Rhythm grade]',{targetBeats:target,userTaps:taps,matched,finalScore:raw});
+  const nMatched=matchedErrors.length;
+  const nMissed=target.length-nMatched;
+  const nExtra=taps.length-nMatched;
+  const absErrors=matchedErrors.map(e=>Math.abs(e));
+
+  // Component 1: Hit accuracy (45 pts max)
+  const hitAcc=target.length>0?(nMatched/target.length)*100:100;
+
+  // Component 2: Timing quality per tap (40 pts max)
+  // Thresholds in ms: [excellent, good, acceptable, weak]; above = poor
+  const thresh=r_diff==='easy'?[30,60,100,150]:
+               r_diff==='medium'?[25,50,85,130]:
+               r_diff==='hard'?[20,40,70,110]:[15,30,55,90];
+  let timingSum=0;
+  absErrors.forEach(ms=>{
+    timingSum+=ms<=thresh[0]?1.00:ms<=thresh[1]?0.80:ms<=thresh[2]?0.55:ms<=thresh[3]?0.30:0.10;
+  });
+  const timingAcc=nMatched>0?(timingSum/nMatched)*100:100;
+
+  // Component 3: Consistency -- low spread = high score (15 pts max)
+  const meanErr=nMatched>0?matchedErrors.reduce((a,b)=>a+b,0)/nMatched:0;
+  const stdMs=nMatched>=2
+    ?Math.round(Math.sqrt(matchedErrors.reduce((a,b)=>a+(b-meanErr)**2,0)/nMatched))
+    :0;
+  const consistScore=Math.max(0,Math.round((1-stdMs/120)*100));
+
+  // Combined: 45% hit + 40% timing + 15% consistency, minus extra-tap penalty
+  let raw=Math.round(hitAcc*0.45+timingAcc*0.40+consistScore*0.15);
+  raw=Math.max(0,raw-nExtra*4); // missed already penalised via hitAcc
+
+  // Timing display values
+  const avgErrMs=Math.round(meanErr);
+  const timingDir=avgErrMs>5?'late':avgErrMs<-5?'early':'on time';
+
+  console.log('[Rhythm grade]',{
+    targetBeats:target,userTaps:taps,nMatched,nMissed,nExtra,
+    hitAcc:hitAcc.toFixed(1),timingAcc:timingAcc.toFixed(1),
+    consistScore,avgErrMs,stdMs,finalScore:raw
+  });
+
   r_total++;
   if(raw>=75){r_correct++;r_streak++;}else{r_streak=0;}
   r_history.unshift({name:r_currentPattern.name,score:raw,taps:taps.length,target:target.length,diff:r_diff});
@@ -6967,12 +7229,18 @@ function r_gradeAttempt(){
   r_updateScore();r_renderHistory();
   r_currentPage=0;r_updatePageIndicator();
   r_setStatus('Attempt complete. Audition or Practice again.');
-  if(raw>=90)r_setFeedback('Excellent timing! Score: '+raw+'%','correct');
-  else if(raw>=75)r_setFeedback('Good rhythm. Score: '+raw+'%','correct');
-  else if(taps.length<target.length)r_setFeedback('Missed some taps. Score: '+raw+'%','wrong');
-  else r_setFeedback('Keep working on it. Score: '+raw+'%','wrong');
+
+  // Two-line feedback: score line + timing line
+  const cls=raw>=75?'correct':'wrong';
+  let fb='Score: '+raw+'%';
+  if(nMissed>0) fb+=' \u00b7 Missed: '+nMissed;
+  if(nExtra>0)  fb+=' \u00b7 Extra: '+nExtra;
+  if(nMatched>0){
+    fb+='<br>Avg: '+Math.abs(avgErrMs)+' ms '+timingDir+' \u00b7 Spread: \u00b1'+stdMs+' ms';
+  }
+  r_setFeedback(fb,cls);
+
   if(typeof pg_checkBadges==='function')pg_checkBadges();
-  // Sync to progress page
   if(typeof pg_rhythmHistory!=='undefined'&&r_history.length){
     const latest=r_history[0];
     if(!pg_rhythmHistory.length||pg_rhythmHistory[0].score!==latest.score||pg_rhythmHistory[0].name!==latest.name){
@@ -7007,6 +7275,7 @@ function r_init(){
   r_renderHistory();
   // Apply METRO slider default (metronome starts quieter than Practice default)
   r_updateMetroVol(65);
+  r_updateMobileSettingsSummary();
 }
 
 ;
@@ -7371,5 +7640,21 @@ function p_init(){
 
 init();
 </script>
+<!-- Mobile Menu -->
+<div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu()"></div>
+<div class="mobile-menu-drawer" id="mobileMenuDrawer">
+  <div class="mobile-menu-header">
+    <div class="mobile-menu-title">MusicMein</div>
+    <button class="mobile-menu-close" onclick="closeMobileMenu()" aria-label="Close menu">&times;</button>
+  </div>
+  <button class="mobile-menu-item active" data-page="practice" onclick="mobileSwitchPage('practice')">Practice</button>
+  <button class="mobile-menu-item" data-page="ear" onclick="mobileSwitchPage('ear')">Ear Training</button>
+  <button class="mobile-menu-item" data-page="rhythm" onclick="mobileSwitchPage('rhythm')">Rhythm</button>
+  <button class="mobile-menu-item" data-page="sight" onclick="mobileSwitchPage('sight')">Sight Reading</button>
+  <button class="mobile-menu-item" data-page="intervals" onclick="mobileSwitchPage('intervals')">Intervals</button>
+  <button class="mobile-menu-item" data-page="improv" onclick="mobileSwitchPage('improv')">Improv</button>
+  <button class="mobile-menu-item" data-page="theory" onclick="mobileSwitchPage('theory')">Theory</button>
+  <button class="mobile-menu-item" data-page="progress" onclick="mobileSwitchPage('progress')">Progress</button>
+</div>
 </body>
 </html>
